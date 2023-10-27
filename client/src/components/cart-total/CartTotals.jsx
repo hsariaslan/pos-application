@@ -7,7 +7,7 @@ import {
 
 const CartTotals = () => {
   return (
-    <div className="cart h-full flex flex-col max-h-[calc(100vh_-_90px)]">
+    <div className="cart h-full flex flex-col max-h-[calc(100vh-90px)]">
       <h2 className="bg-blue-600 text-white text-center py-4 font-bold tracking-wide">Sepetteki Ürünler</h2>
       <ul className="cart-items px-2 py-2 overflow-y-auto">
         <li className="cart-item flex justify-between">
