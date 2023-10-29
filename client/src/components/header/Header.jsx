@@ -8,6 +8,7 @@ import {
   BarChartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import {Link} from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -25,15 +26,15 @@ const Header = () => {
       </div>
       <div className="menu-links flex justify-around items-center gap-7 md:static fixed z-50 bottom-0 md:w-auto w-screen
       md:bg-transparent bg-white left-0 md:border-t-0 border-t md:px-0 px-4 py-2">
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <HomeOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Anasayfa</span>
-        </a>
+        </Link>
         <Badge count={5} offset={[0, 6]} className="md:flex hidden">
-          <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+          <Link to="/cart" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
             <ShoppingCartOutlined className="md:text-2xl text-xl" />
             <span className="md:text-xs text-[10px]">Sepet</span>
-          </a>
+          </Link>
         </Badge>
         <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <CopyOutlined className="md:text-2xl text-xl" />
