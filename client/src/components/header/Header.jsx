@@ -36,14 +36,14 @@ const Header = () => {
             <span className="md:text-xs text-[10px]">Sepet</span>
           </Link>
         </Badge>
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/invoices" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <CopyOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Faturalar</span>
-        </a>
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        </Link>
+        <Link to="/customers" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <UserOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Müşteriler</span>
-        </a>
+        </Link>
         <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <BarChartOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">İstatistikler</span>
