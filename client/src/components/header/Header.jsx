@@ -40,10 +40,10 @@ const Header = () => {
           <CopyOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Faturalar</span>
         </Link>
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/customers" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <UserOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Müşteriler</span>
-        </a>
+        </Link>
         <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <BarChartOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">İstatistikler</span>
