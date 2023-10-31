@@ -44,10 +44,10 @@ const Header = () => {
           <UserOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Müşteriler</span>
         </Link>
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/statistics" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <BarChartOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">İstatistikler</span>
-        </a>
+        </Link>
         <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <LogoutOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Çıkış</span>
