@@ -1,10 +1,10 @@
 const router = require("express").Router();
-const Category = require("../models/Category");
+const Invoice = require("../models/Invoice");
 
 router.get("/", async(req, res) => {
   try {
-    const categories = await Category.find();
-    res.status(200).json(categories);
+    const invoices = await Invoice.find();
+    res.status(200).json(invoices);
   } catch (e) {
     res.status(400).json(e);
   }
@@ -12,9 +12,9 @@ router.get("/", async(req, res) => {
 
 router.post("/create", async(req, res) => {
   try {
-    const newCategory = new Category(req.body);
-    await newCategory.save();
-    res.status(200).json(newCategory);
+    const newInvoice = new Invoice(req.body);
+    await newInvoice.save();
+    res.status(200).json(newInvoice);
   } catch (e) {
     res.status(400).json(e);
   }
@@ -22,8 +22,8 @@ router.post("/create", async(req, res) => {
 
 router.get("/show", async(req, res) => {
   try {
-    const category = await Category.findById(req.body.id);
-    res.status(200).json(category);
+    const invoice = await Invoice.findById(req.body.id);
+    res.status(200).json(invoice);
   } catch (e) {
     res.status(400).json(e);
   }
@@ -31,9 +31,9 @@ router.get("/show", async(req, res) => {
 
 router.put("/update", async(req, res) => {
   try {
-    await Category.findByIdAndUpdate(req.body.id, req.body);
-    const category = await Category.findById(req.body.id);
-    res.status(200).json(category);
+    await Invoice.findByIdAndUpdate(req.body.id, req.body);
+    const invoice = await Invoice.findById(req.body.id);
+    res.status(200).json(invoice);
   } catch (e) {
     res.status(400).json(e);
   }
@@ -41,7 +41,7 @@ router.put("/update", async(req, res) => {
 
 router.delete("/delete", async(req, res) => {
   try {
-    await Category.findByIdAndDelete(req.body.id);
+    await Invoice.findByIdAndDelete(req.body.id);
     res.status(200).json("Item deleted successfully.");
   } catch (e) {
     res.status(400).json(e);
