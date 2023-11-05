@@ -1,15 +1,38 @@
-const Categories = () => {
+import {useState} from "react";
+import {PlusOutlined, EditOutlined} from "@ant-design/icons";
+import CreateCategory from "./CreateCategory";
+import "./style.css";
+import EditCategory from "./EditCategory";
+
+const Categories = ({categories, setCategories}) => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   return (
     <ul className="flex md:flex-col gap-4 text-lg">
-      <li className="bg-green-700 px-6 py-10 text-white cursor-pointer hover:bg-pink-700 transition-all text-center">
-        <span>Tümü</span>
+      {categories.map((item) => (
+        <li key={item._id} className="category-item">
+          <span>{item.title}</span>
+        </li>
+      ))}
+      <li className="category-item !bg-purple-800 hover:opacity-80" onClick={() => setIsAddModalOpen(true)}>
+        <PlusOutlined className="md:text-2xl" />
       </li>
-      <li className="bg-green-700 px-6 py-10 text-white cursor-pointer hover:bg-pink-700 transition-all text-center">
-        <span>Yiyecek</span>
+      <li className="category-item !bg-orange-800 hover:opacity-80" onClick={() => setIsEditModalOpen(true)}>
+        <EditOutlined className="md:text-2xl" />
       </li>
-      <li className="bg-green-700 px-6 py-10 text-white cursor-pointer hover:bg-pink-700 transition-all text-center">
-        <span>İçecek</span>
-      </li>
+      <CreateCategory
+        categories={categories}
+        setCategories={setCategories}
+        isAddModalOpen={isAddModalOpen}
+        setIsAddModalOpen={setIsAddModalOpen}
+      />
+      <EditCategory
+        categories={categories}
+        setCategories={setCategories}
+        isEditModalOpen={isEditModalOpen}
+        setIsEditModalOpen={setIsEditModalOpen}
+      />
     </ul>
   );
 };
