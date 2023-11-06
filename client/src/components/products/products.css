@@ -1,0 +1,7 @@
+.product-item {
+    @apply border hover:shadow-lg cursor-pointer transition-all
+}
+
+.product-item-action {
+    @apply flex justify-center items-center hover:opacity-90 min-h-[180px]
+}
