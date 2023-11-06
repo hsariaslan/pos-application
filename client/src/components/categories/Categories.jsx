@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {PlusOutlined, EditOutlined} from "@ant-design/icons";
 import CreateCategory from "./CreateCategory";
-import "./style.css";
 import EditCategory from "./EditCategory";
+import "./categories.css";
 
 const Categories = ({categories, setCategories}) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

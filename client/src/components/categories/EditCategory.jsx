@@ -47,7 +47,7 @@ const EditCategory = ({categories, setCategories, isEditModalOpen, setIsEditModa
 
   const columns = [
     {
-      title: "Category Title",
+      title: "Kategori Adı",
       dataIndex: "title",
       render: (_, record) => {
         if (record._id === editingRow._id) {
@@ -62,7 +62,7 @@ const EditCategory = ({categories, setCategories, isEditModalOpen, setIsEditModa
       }
     },
     {
-      title: "Action",
+      title: "İşlemler",
       dataIndex: "action",
       render: (_, record) => {
         return (
