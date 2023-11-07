@@ -11,7 +11,7 @@ const CreateProduct = ({
 
   const onFinish = (values) => {
     try {
-      fetch("http://localhost:5000/api/products/create", {
+      fetch(process.env.REACT_APP_API_URL + "/products/create", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {"Content-type": "application/json; charset=UTF-8"}

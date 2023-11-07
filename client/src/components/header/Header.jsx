@@ -1,4 +1,5 @@
-import { Input, Badge } from 'antd';
+import {useSelector} from "react-redux";
+import {Input, Badge} from 'antd';
 import {
   SearchOutlined,
   HomeOutlined,
@@ -11,6 +12,8 @@ import {
 import {Link} from 'react-router-dom'
 
 const Header = () => {
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
   return (
     <header className="px-6 py-4 border-b mb-6 flex justify-between items-center gap-10">
       <div className="logo">
@@ -30,7 +33,7 @@ const Header = () => {
           <HomeOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Anasayfa</span>
         </Link>
-        <Badge count={5} offset={[0, 6]} className="md:flex hidden">
+        <Badge count={cartItems.length} offset={[0, 6]} className="md:flex hidden">
           <Link to="/cart" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
             <ShoppingCartOutlined className="md:text-2xl text-xl" />
             <span className="md:text-xs text-[10px]">Sepet</span>
