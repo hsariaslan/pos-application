@@ -1,8 +1,16 @@
+import {useDispatch} from "react-redux";
+import {addProduct} from "../../redux/cartSlice";
 import "./products.css";
 
 const ProductItem = ({product}) => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(addProduct({...product, quantity: 1}));
+  }
+
   return (
-    <div className="product-item">
+    <div className="product-item" onClick={handleClick}>
       <div className="product-img">
         <img
           src={product.image}

@@ -5,7 +5,7 @@ const CreateCategory = ({categories, setCategories, isAddModalOpen, setIsAddModa
 
   const onFinish = (values) => {
     try {
-      fetch("http://localhost:5000/api/categories/create", {
+      fetch(process.env.REACT_APP_API_URL + "/categories/create", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {"Content-type": "application/json; charset=UTF-8"}

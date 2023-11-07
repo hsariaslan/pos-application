@@ -11,7 +11,7 @@ const EditProduct = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/categories/");
+        const res = await fetch(process.env.REACT_APP_API_URL + "/categories/");
         const data = await res.json();
         data &&
         setCategories(
@@ -26,7 +26,7 @@ const EditProduct = () => {
 
     const getProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products/");
+        const res = await fetch(process.env.REACT_APP_API_URL + "/products/");
         const data = await res.json();
 
         setProducts(data);
@@ -41,7 +41,7 @@ const EditProduct = () => {
 
   const onFinish = (values) => {
     try {
-      fetch("http://localhost:5000/api/products/update", {
+      fetch(process.env.REACT_APP_API_URL + "/products/update", {
         method: "PUT",
         body: JSON.stringify({...values, id: editingItem._id}),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -67,7 +67,7 @@ const EditProduct = () => {
   const deleteProduct = (id) => {
     if (window.confirm("Emin misiniz?")) {
       try {
-        fetch("http://localhost:5000/api/products/delete", {
+        fetch(process.env.REACT_APP_API_URL + "/products/delete", {
           method: "DELETE",
           body: JSON.stringify({id: id}),
           headers: {"Content-type": "application/json; charset=UTF-8"}

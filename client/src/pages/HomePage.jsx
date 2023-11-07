@@ -10,7 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/categories/");
+        const res = await fetch(process.env.REACT_APP_API_URL + "/categories/");
         const data = await res.json();
         data &&
         setCategories(
