@@ -102,6 +102,9 @@ const EditProduct = () => {
       width: "8%",
       title: "Fiyat",
       dataIndex: "price",
+      render: (text) => {
+        return (<span>{text}₺</span>);
+      }
     },
     {
       width: "8%",

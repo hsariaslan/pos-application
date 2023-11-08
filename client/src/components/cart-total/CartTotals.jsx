@@ -3,10 +3,12 @@ import {Button, message} from "antd";
 import {ClearOutlined} from '@ant-design/icons';
 import CartItem from "./CartItem";
 import {clearCart} from "../../redux/cartSlice";
+import {useNavigate} from "react-router-dom";
 
 const CartTotals = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <div className="cart h-full flex flex-col max-h-[calc(100vh-90px)]">
@@ -14,7 +16,7 @@ const CartTotals = () => {
       <ul className="cart-items px-2 py-2 overflow-y-auto">
         {cart.cartItems.length > 0 ? cart.cartItems.map((cartItem) => (
           <CartItem key={cartItem._id} cartItem={cartItem} />
-        )) : 'Sepette ürün yok.'}
+        )).reverse() : 'Sepette ürün yok.'}
       </ul>
       <div className="cart-totals mt-auto">
         <div className="border-t border-b">
@@ -39,6 +41,7 @@ const CartTotals = () => {
             size="large"
             className="w-full"
             disabled={cart.cartItems.length === 0}
+            onClick={() => navigate("/cart")}
           >
             Sipariş Oluştur
           </Button>

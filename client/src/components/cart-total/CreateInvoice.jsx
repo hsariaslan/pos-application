@@ -1,48 +1,76 @@
-import {Modal, Form, Input, Select, Button, Card} from "antd";
+import {useDispatch, useSelector} from "react-redux";
+import {Modal, Form, Input, Select, Button, Card, message} from "antd";
+import {clearCart} from "../../redux/cartSlice";
+import {useNavigate} from "react-router-dom";
 
 const CreateInvoice = ({isModalOpen, setIsModalOpen}) => {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+
+  const onFinish = async (values) => {
+    try {
+      const res = await fetch(process.env.REACT_APP_API_URL + "/invoices/create", {
+        method: "POST",
+        body: JSON.stringify({...values, ...cart}),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+      });
+
+      if (res.status === 200) {
+        dispatch(clearCart());
+        form.resetFields();
+        navigate("/invoices");
+        message.success("Fatura başarıyla oluşturuldu.");
+      }
+    } catch (e) {
+      message.error("Fatura oluştururken hata.");
+      console.log(e);
+    }
+  }
+
   return (
     <div>
       <Modal title="Fatura Oluştur" open={isModalOpen} footer={false} onCancel={() => setIsModalOpen(false)}>
-        <Form layout="vertical">
+        <Form layout="vertical" onFinish={onFinish} form={form}>
           <Form.Item
-            name="customer_name"
+            name="customerName"
             rules={[{required: true}]}
             label="Müşteri Adı"
           >
             <Input placeholder="Müşteri adı soyadı yazınız" />
           </Form.Item>
           <Form.Item
-            name="phone_number"
+            name="customerPhoneNumber"
             rules={[{required: true}]}
             label="Telefon Numarası"
           >
             <Input placeholder="Müşterinin telefon numarasını yazınız" />
           </Form.Item>
           <Form.Item
-            name="payment_method"
+            name="paymentMethod"
             rules={[{required: true}]}
             label="Ödeme Yöntemi"
           >
             <Select placeholder="Ödeme yöntemi seçiniz">
-              <Select.Option value={0}>Nakit</Select.Option>
-              <Select.Option value={1}>Kredi Kartı</Select.Option>
+              <Select.Option value="Nakit">Nakit</Select.Option>
+              <Select.Option value="Kredi Kartı">Kredi Kartı</Select.Option>
             </Select>
           </Form.Item>
           <Card>
             <div className="flex justify-between">
               <span>Ara Toplam</span>
-              <span>549.00₺</span>
+              <span>{cart.subTotal}₺</span>
             </div>
             <div className="flex justify-between my-2">
-              <span>KDV Toplam %8</span>
-              <span className="text-red-600">+43.92₺</span>
+              <span>KDV %8</span>
+              <span className="text-red-600">{cart.tax > 0 ? '+' + cart.tax : 0}₺</span>
             </div>
             <div className="flex justify-between">
-              <b>Toplam</b>
-              <b>592.92₺</b>
+              <b>Genel Toplam</b>
+              <b>{cart.total}₺</b>
             </div>
-            <div className="flex jus tify-end">
+            <div className="flex justify-end">
               <Button
                 className="mt-4"
                 type="primary"
