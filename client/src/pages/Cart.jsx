@@ -1,41 +1,77 @@
 import {useState} from 'react';
-import {Table, Card, Button} from "antd";
+import {useDispatch, useSelector} from "react-redux";
+import {Table, Card, Button, message, Popconfirm} from "antd";
 import Header from "../components/header/Header";
 import CreateInvoice from "../components/cart-total/CreateInvoice";
+import QuantityChanger from "../components/cart-total/QuantityChanger";
+import {removeProduct} from "../redux/cartSlice";
 
 const Cart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-  ];
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      width: "126px",
+      title: 'Ürün Resmi',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_, record) => {
+        return (
+          <img src={record.image} alt={record.title} className="w-full h-20 object-cover" />
+        );
+      }
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Ürün Adı',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Kategori',
+      dataIndex: 'category',
+      key: 'category',
+    },
+    {
+      title: 'Fiyat',
+      dataIndex: 'price',
+      key: 'price',
+      render: (text) => {
+        return (<span>{text}₺</span>);
+      }
+    },
+    {
+      title: 'Adet',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      render: (_, record) => {
+        return (<QuantityChanger cartItem={record} />);
+      }
+    },
+    {
+      title: 'Toplam Fiyat',
+      render: (_, record) => {
+        return (<span>{record.quantity * record.price}₺</span>);
+      }
+    },
+    {
+      title: 'İşlemler',
+      render: (_, record) => {
+        return (
+          <Popconfirm
+            title="Emin misiniz?"
+            okText="Evet"
+            cancelText="İptal"
+            onConfirm={() => {
+              dispatch(removeProduct(record));
+              message.success("Ürün sepetten çıkarıldı.");
+            }}
+          >
+            <Button type="link" danger className="pl-0">Sil</Button>
+          </Popconfirm>
+        );
+      }
     },
   ];
 
@@ -44,26 +80,37 @@ const Cart = () => {
       <Header />
       <div className="px-6">
         <h1 className="text-4xl font-bold text-center mb-4">Sepet</h1>
-        <Table dataSource={dataSource} columns={columns} bordered pagination={false} />
+        <Table
+          dataSource={cart.cartItems}
+          columns={columns}
+          bordered
+          pagination={false}
+          rowKey="_id"
+          scroll={{
+            x: 1200,
+            y: 300,
+          }}
+        />
         <div className="cart-total flex justify-end mt-4">
           <Card className="w-72">
             <div className="flex justify-between">
               <span>Ara Toplam</span>
-              <span>549.00₺</span>
+              <span>{cart.subTotal}₺</span>
             </div>
             <div className="flex justify-between my-2">
-              <span>KDV Toplam %8</span>
-              <span className="text-red-600">+43.92₺</span>
+              <span>KDV %8</span>
+              <span className="text-red-600">{cart.tax > 0 ? '+' + cart.tax : 0}₺</span>
             </div>
             <div className="flex justify-between">
-              <b>Toplam</b>
-              <b>592.92₺</b>
+              <b>Genel Toplam</b>
+              <b>{cart.total}₺</b>
             </div>
             <Button
               className="mt-4 w-full"
               type="primary"
               size="large"
               onClick={() => setIsModalOpen(true)}
+              disabled={cart.cartItems.length === 0}
             >
               Sipariş Oluştur
             </Button>
