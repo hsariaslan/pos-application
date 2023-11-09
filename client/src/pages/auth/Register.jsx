@@ -1,14 +1,39 @@
-import {Form, Input, Button, Carousel} from "antd";
-import {Link} from "react-router-dom";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {Form, Input, Button, Carousel, message} from "antd";
 import AuthCarousel from "../../components/auth/AuthCarousel";
 
 const Register = () => {
-    return (
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
+    setLoading(true);
+
+    try {
+      const res = await fetch(process.env.REACT_APP_API_URL + "/auth/register", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+      });
+
+      if (res.status === 200) {
+        navigate("/login");
+        message.success("Kayıt olma işlemi başarılı. Giriş yapınız.");
+      }
+    } catch (e) {
+      setLoading(false);
+      message.error("Kayıt olurken hata.");
+      console.log(e);
+    }
+  }
+
+  return (
     <div className="h-screen">
       <div className="flex justify-between h-full">
         <div className="xl:px-20 px-10 flex flex-col w-full h-full justify-center relative">
           <h1 className="text-center text-5xl font-bold mb-6">LOGO</h1>
-          <Form layout="vertical">
+          <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
               name="username"
               rules={[{
@@ -66,6 +91,7 @@ const Register = () => {
                 size="large"
                 htmlType="submit"
                 className="w-full mt-2"
+                loading={loading}
               >
                 Kaydol
               </Button>

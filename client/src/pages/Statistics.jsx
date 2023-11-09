@@ -4,14 +4,27 @@ import Header from "../components/header/Header";
 import StatisticsCard from "../components/statistics/StatisticsCard";
 
 const Statistics = () => {
+  const [products, setProducts] = useState([]);
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    getProducts();
     asyncFetch();
   }, []);
 
+  const getProducts = async () => {
+    try {
+      const res = await fetch(process.env.REACT_APP_API_URL + "/products/");
+      const data = await res.json();
+
+      setProducts(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const asyncFetch = () => {
-    fetch('https://gw.alipayobjects.com/os/bmw-prod/360c3eae-0c73-46f0-a982-4746a6095010.json')
+    fetch(process.env.REACT_APP_API_URL + "/invoices/")
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {
@@ -19,47 +32,20 @@ const Statistics = () => {
       });
   };
 
-  const data2 = [
-    {
-      type: '分类一',
-      value: 27,
-    },
-    {
-      type: '分类二',
-      value: 25,
-    },
-    {
-      type: '分类三',
-      value: 18,
-    },
-    {
-      type: '分类四',
-      value: 15,
-    },
-    {
-      type: '分类五',
-      value: 10,
-    },
-    {
-      type: '其他',
-      value: 5,
-    },
-  ];
-
-  const config = {
+  const configArea = {
     data,
-    xField: 'timePeriod',
-    yField: 'value',
+    xField: 'customerName',
+    yField: 'subTotal',
     xAxis: {
       range: [0, 1],
     },
   };
 
-  const config2 = {
+  const configPie = {
     appendPadding: 10,
-    data: data2,
-    angleField: 'value',
-    colorField: 'type',
+    data,
+    angleField: 'subTotal',
+    colorField: 'customerName',
     radius: 1,
     innerRadius: 0.6,
     label: {
@@ -87,48 +73,55 @@ const Statistics = () => {
           overflow: 'hidden',
           textOverflow: 'ellipsis',
         },
-        content: 'AntV\nG2Plot',
+        content: 'Toplam\nDeğer',
       },
     },
   };
 
+  const totalProfit = () => {
+    return data.reduce(((total, item) => item.total + total), 0).toFixed(2);
+  }
+
   return (
-    <div>
+    <div className="sm:pb-14">
       <Header />
       <div className="px-6">
         <h1 className="text-4xl font-bold text-center mb-4">İstatistikler</h1>
         <div className="statistics-section">
           <h2 className="text-xl">
-            Hoş geldin <span className="text-green-700 font-bold text-xl">admin</span>.
+            Hoş geldin&nbsp;
+            <span className="text-green-700 font-bold text-xl">
+              {JSON.parse(localStorage.getItem("posUser")).username}
+            </span>.
           </h2>
           <div className="statistics-card my-10 grid xl:grid-cols-4 md:grid-cols-2 md:gap-10 gap-4">
             <StatisticsCard
               image="images/user.png"
               title="Toplam Müşteri"
-              amount={7}
+              amount={data.length}
             />
             <StatisticsCard
               image="images/money.png"
               title="Toplam Kazanç"
-              amount="1266.84 ₺"
+              amount={totalProfit() + '₺'}
             />
             <StatisticsCard
               image="images/sale.png"
               title="Toplam Satış"
-              amount={8}
+              amount={data.length}
             />
             <StatisticsCard
               image="images/product.png"
               title="Toplam Ürün"
-              amount={34}
+              amount={products?.length}
             />
           </div>
-          <div className="flex justify-between gap-10 lg:flex-row flex-col items-center">
-            <div className="lg:w-1/2 lg:h-full w-5/6 h-72">
-              <Area {...config} />
+          <div className="flex justify-between gap-10 md:flex-row flex-col items-center">
+            <div className="md:w-1/2 md:h-full w-full h-72">
+              <Area {...configArea} />
             </div>
-            <div className="lg:w-1/2 lg:h-full w-5/6 h-72">
-              <Pie {...config2} />
+            <div className="md:w-1/2 md:h-full w-full h-72">
+              <Pie {...configPie} />
             </div>
           </div>
         </div>
