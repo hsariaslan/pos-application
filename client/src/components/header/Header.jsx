@@ -9,10 +9,16 @@ import {
   BarChartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const Header = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    localStorage.removeItem("posUser");
+    navigate("/login");
+  }
 
   return (
     <header className="px-6 py-4 border-b mb-6 flex justify-between items-center gap-10">
@@ -51,10 +57,10 @@ const Header = () => {
           <BarChartOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">İstatistikler</span>
         </Link>
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/login" onClick={logOut} className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
           <LogoutOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Çıkış</span>
-        </a>
+        </Link>
       </div>
       <Badge count={cartItems.length} offset={[0, 6]} className="md:hidden flex">
         <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">

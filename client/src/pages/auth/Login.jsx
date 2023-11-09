@@ -1,14 +1,52 @@
-import {Form, Input, Checkbox, Button, Carousel} from "antd";
-import {Link} from "react-router-dom";
+import {Form, Input, Checkbox, Button, Carousel, message} from "antd";
+import {Link, useNavigate} from "react-router-dom";
 import AuthCarousel from "../../components/auth/AuthCarousel";
+import {useState} from "react";
 
 const Login = () => {
-    return (
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
+    setLoading(true);
+
+    try {
+      const res = await fetch(process.env.REACT_APP_API_URL + "/auth/login", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+      });
+
+      const user = await res.json();
+
+      if (res.status === 200) {
+        localStorage.setItem("posUser", JSON.stringify({
+          username: user.username,
+          email: user.email
+        }));
+        navigate("/");
+      } else {
+        setLoading(false);
+        message.error("Email veya şifre yanlış.");
+      }
+    } catch (e) {
+      setLoading(false);
+      message.error("Giriş yaparken hata.");
+      console.log(e);
+    }
+  }
+  return (
     <div className="h-screen">
       <div className="flex justify-between h-full">
         <div className="xl:px-20 px-10 flex flex-col w-full h-full justify-center relative">
           <h1 className="text-center text-5xl font-bold mb-6">LOGO</h1>
-          <Form layout="vertical">
+          <Form
+            layout="vertical"
+            onFinish={onFinish}
+            initialValues={{
+              remember: false,
+            }}
+          >
             <Form.Item
               name="email"
               rules={[{
@@ -35,7 +73,7 @@ const Login = () => {
             >
               <div className="flex justify-between items-center">
                 <Checkbox>Beni hatırla</Checkbox>
-                <Link>Şifrenizi unuttunuz mu?</Link>
+                <Link to="/login">Şifrenizi unuttunuz mu?</Link>
               </div>
             </Form.Item>
             <Form.Item>
@@ -44,6 +82,7 @@ const Login = () => {
                 size="large"
                 htmlType="submit"
                 className="w-full mt-2"
+                loading={loading}
               >
                 Giriş Yap
               </Button>

@@ -89,7 +89,10 @@ const Statistics = () => {
         <h1 className="text-4xl font-bold text-center mb-4">İstatistikler</h1>
         <div className="statistics-section">
           <h2 className="text-xl">
-            Hoş geldin <span className="text-green-700 font-bold text-xl">admin</span>.
+            Hoş geldin&nbsp;
+            <span className="text-green-700 font-bold text-xl">
+              {JSON.parse(localStorage.getItem("posUser")).username}
+            </span>.
           </h2>
           <div className="statistics-card my-10 grid xl:grid-cols-4 md:grid-cols-2 md:gap-10 gap-4">
             <StatisticsCard
