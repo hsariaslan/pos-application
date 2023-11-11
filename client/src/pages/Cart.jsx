@@ -1,15 +1,126 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Table, Card, Button, message, Popconfirm} from "antd";
+import {Table, Card, Button, message, Popconfirm, Space, Input} from "antd";
+import Highlighter from 'react-highlight-words';
 import Header from "../components/header/Header";
 import CreateInvoice from "../components/cart-total/CreateInvoice";
 import QuantityChanger from "../components/cart-total/QuantityChanger";
 import {removeProduct} from "../redux/cartSlice";
+import {SearchOutlined} from "@ant-design/icons";
 
 const Cart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
 
   const columns = [
     {
@@ -27,11 +138,13 @@ const Cart = () => {
       title: 'Ürün Adı',
       dataIndex: 'title',
       key: 'title',
+      ...getColumnSearchProps('title'),
     },
     {
       title: 'Kategori',
       dataIndex: 'category',
       key: 'category',
+      ...getColumnSearchProps('category'),
     },
     {
       title: 'Fiyat',
@@ -39,7 +152,8 @@ const Cart = () => {
       key: 'price',
       render: (text) => {
         return (<span>{text}₺</span>);
-      }
+      },
+      sorter: (a, b) => a.price - b.price
     },
     {
       title: 'Adet',
@@ -47,13 +161,15 @@ const Cart = () => {
       key: 'quantity',
       render: (_, record) => {
         return (<QuantityChanger cartItem={record} />);
-      }
+      },
+      sorter: (a, b) => a.quantity - b.quantity
     },
     {
       title: 'Toplam Fiyat',
       render: (_, record) => {
         return (<span>{record.quantity * record.price}₺</span>);
-      }
+      },
+      sorter: (a, b) => (a.quantity * a.price) - (b.quantity * b.price)
     },
     {
       title: 'İşlemler',

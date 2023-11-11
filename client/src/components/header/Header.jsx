@@ -9,10 +9,11 @@ import {
   BarChartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
 
-const Header = () => {
+const Header = ({setSearch}) => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const {pathname} = useLocation();
   const navigate = useNavigate();
 
   const logOut = () => {
@@ -23,14 +24,21 @@ const Header = () => {
   return (
     <header className="px-6 py-4 border-b mb-6 flex justify-between items-center gap-10">
       <div className="logo">
-        <a href="/" className="text-2xl font-bold md:text-4xl">LOGO</a>
+        <Link to="/" className="text-2xl font-bold md:text-4xl">LOGO</Link>
       </div>
-      <div className="search-bar flex-1 flex justify-center">
+      <div
+        className="search-bar flex-1 flex justify-center"
+      >
         <Input
+          id="search"
           size="large"
           placeholder="Search..."
           prefix={<SearchOutlined />}
           className="rounded-full max-w-[800px]"
+          onFocus={() => {
+            pathname !== "/" && navigate("/");
+          }}
+          onChange={(e) => setSearch(e.target.value.toLowerCase())}
         />
       </div>
       <div className="menu-links flex justify-around items-center gap-7 md:static fixed z-50 bottom-0 md:w-auto w-screen
