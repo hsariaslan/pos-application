@@ -19,7 +19,7 @@ body {
     overflow: hidden;
   }
 
-  .categories::-webkit-scrollbar {
+  .categories::-webkit-scrollbar, .products::-webkit-scrollbar {
     display: none;
   }
 }
