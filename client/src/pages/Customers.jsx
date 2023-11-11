@@ -3,9 +3,10 @@ import {Button, Input, Space, Table} from "antd";
 import Header from "../components/header/Header";
 import {SearchOutlined} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import LoadingSpin from "../components/loading-spin/LoadingSpin";
 
 const Customers = () => {
-  const [invoices, setInvoices] = useState([]);
+  const [invoices, setInvoices] = useState();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
@@ -156,17 +157,19 @@ const Customers = () => {
       <Header />
       <div className="px-6">
         <h1 className="text-4xl font-bold text-center mb-4">Müşteriler</h1>
-        <Table
-          dataSource={invoices}
-          columns={columns}
-          bordered
-          pagination={false}
-          rowKey="_id"
-          scroll={{
-            x: 1000,
-            y: 300
-          }}
-        />
+        {invoices ? (
+          <Table
+            dataSource={invoices}
+            columns={columns}
+            bordered
+            pagination={false}
+            rowKey="_id"
+            scroll={{
+              x: 1000,
+              y: 300
+            }}
+          />
+        ) : (<LoadingSpin />)}
       </div>
     </div>
   );

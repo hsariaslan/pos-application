@@ -9,7 +9,8 @@ import {
   BarChartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom';
+import './header.css';
 
 const Header = ({setSearch}) => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -41,40 +42,39 @@ const Header = ({setSearch}) => {
           onChange={(e) => setSearch(e.target.value.toLowerCase())}
         />
       </div>
-      <div className="menu-links flex justify-around items-center gap-7 md:static fixed z-50 bottom-0 md:w-auto w-screen
-      md:bg-transparent bg-white left-0 md:border-t-0 border-t md:px-0 px-4 py-2">
-        <Link to="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+      <div className="menu-links">
+        <Link to="/" className={`menu-link ${pathname === "/" && "active"}`}>
           <HomeOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Anasayfa</span>
         </Link>
         <Badge count={cartItems.length} offset={[0, 6]} className="md:flex hidden">
-          <Link to="/cart" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+          <Link to="/cart" className={`menu-link ${pathname === "/cart" && "active"}`}>
             <ShoppingCartOutlined className="md:text-2xl text-xl" />
             <span className="md:text-xs text-[10px]">Sepet</span>
           </Link>
         </Badge>
-        <Link to="/invoices" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/invoices" className={`menu-link ${pathname === "/invoices" && "active"}`}>
           <CopyOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Faturalar</span>
         </Link>
-        <Link to="/customers" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/customers" className={`menu-link ${pathname === "/customers" && "active"}`}>
           <UserOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Müşteriler</span>
         </Link>
-        <Link to="/statistics" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/statistics" className={`menu-link ${pathname === "/statistics" && "active"}`}>
           <BarChartOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">İstatistikler</span>
         </Link>
-        <Link to="/login" onClick={logOut} className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/login" onClick={logOut} className="menu-link">
           <LogoutOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Çıkış</span>
         </Link>
       </div>
       <Badge count={cartItems.length} offset={[0, 6]} className="md:hidden flex">
-        <a href="/" className="flex flex-col items-center hover:text-[#40a9ff] transition-all">
+        <Link to="/cart" className={`menu-link ${pathname === "/cart" && "active"}`}>
           <ShoppingCartOutlined className="text-2xl" />
           <span className="md:text-xs text-[10px]">Sepet</span>
-        </a>
+        </Link>
       </Badge>
     </header>
   );

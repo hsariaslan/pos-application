@@ -4,9 +4,10 @@ import Header from "../components/header/Header";
 import PrintInvoice from "../components/invoices/PrintInvoice";
 import {SearchOutlined} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import LoadingSpin from "../components/loading-spin/LoadingSpin";
 
 const Invoices = () => {
-  const [invoices, setInvoices] = useState([]);
+  const [invoices, setInvoices] = useState();
   const [invoice, setInvoice] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -189,17 +190,19 @@ const Invoices = () => {
       <Header />
       <div className="px-6">
         <h1 className="text-4xl font-bold text-center mb-4">Faturalar</h1>
-        <Table
-          dataSource={invoices}
-          columns={columns}
-          bordered
-          pagination={false}
-          rowKey="_id"
-          scroll={{
-            x: 1000,
-            y: 300
-          }}
-        />
+        {invoices ? (
+          <Table
+            dataSource={invoices}
+            columns={columns}
+            bordered
+            pagination={false}
+            rowKey="_id"
+            scroll={{
+              x: 1000,
+              y: 300
+            }}
+          />
+        ) : (<LoadingSpin />)}
       </div>
       <PrintInvoice invoice={invoice} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </div>
