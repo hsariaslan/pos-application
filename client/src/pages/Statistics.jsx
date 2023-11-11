@@ -2,10 +2,11 @@ import {useState, useEffect} from 'react';
 import {Area, Pie} from '@ant-design/plots';
 import Header from "../components/header/Header";
 import StatisticsCard from "../components/statistics/StatisticsCard";
+import LoadingSpin from "../components/loading-spin/LoadingSpin";
 
 const Statistics = () => {
-  const [products, setProducts] = useState([]);
-  const [data, setData] = useState([]);
+  const [products, setProducts] = useState();
+  const [data, setData] = useState();
 
   useEffect(() => {
     getProducts();
@@ -87,44 +88,46 @@ const Statistics = () => {
       <Header />
       <div className="px-6">
         <h1 className="text-4xl font-bold text-center mb-4">İstatistikler</h1>
-        <div className="statistics-section">
-          <h2 className="text-xl">
-            Hoş geldin&nbsp;
-            <span className="text-green-700 font-bold text-xl">
+        {data && products ? (
+          <div className="statistics-section">
+            <h2 className="text-xl">
+              Hoş geldin&nbsp;
+              <span className="text-green-700 font-bold text-xl">
               {JSON.parse(localStorage.getItem("posUser")).username}
             </span>.
-          </h2>
-          <div className="statistics-card my-10 grid xl:grid-cols-4 md:grid-cols-2 md:gap-10 gap-4">
-            <StatisticsCard
-              image="images/user.png"
-              title="Toplam Müşteri"
-              amount={data.length}
-            />
-            <StatisticsCard
-              image="images/money.png"
-              title="Toplam Kazanç"
-              amount={totalProfit() + '₺'}
-            />
-            <StatisticsCard
-              image="images/sale.png"
-              title="Toplam Satış"
-              amount={data.length}
-            />
-            <StatisticsCard
-              image="images/product.png"
-              title="Toplam Ürün"
-              amount={products?.length}
-            />
-          </div>
-          <div className="flex justify-between gap-10 md:flex-row flex-col items-center">
-            <div className="md:w-1/2 md:h-full w-full h-72">
-              <Area {...configArea} />
+            </h2>
+            <div className="statistics-card my-10 grid xl:grid-cols-4 md:grid-cols-2 md:gap-10 gap-4">
+              <StatisticsCard
+                image="images/user.png"
+                title="Toplam Müşteri"
+                amount={data.length}
+              />
+              <StatisticsCard
+                image="images/money.png"
+                title="Toplam Kazanç"
+                amount={totalProfit() + '₺'}
+              />
+              <StatisticsCard
+                image="images/sale.png"
+                title="Toplam Satış"
+                amount={data.length}
+              />
+              <StatisticsCard
+                image="images/product.png"
+                title="Toplam Ürün"
+                amount={products?.length}
+              />
             </div>
-            <div className="md:w-1/2 md:h-full w-full h-72">
-              <Pie {...configPie} />
+            <div className="flex justify-between gap-10 md:flex-row flex-col items-center">
+              <div className="md:w-1/2 md:h-full w-full h-72">
+                <Area {...configArea} />
+              </div>
+              <div className="md:w-1/2 md:h-full w-full h-72">
+                <Pie {...configPie} />
+              </div>
             </div>
           </div>
-        </div>
+        ) : (<LoadingSpin />)}
       </div>
     </div>
   );
