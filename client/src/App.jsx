@@ -7,7 +7,6 @@ import Login from "./pages/auth/Login";
 import Cart from "./pages/Cart";
 import Invoices from "./pages/Invoices";
 import Customers from "./pages/Customers";
-import Statistics from "./pages/Statistics";
 import Products from "./pages/Products";
 
 const App = () => {
@@ -40,11 +39,6 @@ const App = () => {
         <Route path="/customers" element={
           <RouteControl>
             <Customers />
-          </RouteControl>
-        } />
-        <Route path="/statistics" element={
-          <RouteControl>
-            <Statistics />
           </RouteControl>
         } />
         <Route path="/products" element={
