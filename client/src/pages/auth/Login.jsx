@@ -103,11 +103,6 @@ const Login = () => {
                   description="Tüm Cihaz Boyutlarıyla Uyumluluk"
                 />
                 <AuthCarousel
-                  image="images/statistics.svg"
-                  title="İstatistikler"
-                  description="Geniş Tutulan İstatistikler"
-                />
-                <AuthCarousel
                   image="images/customer.svg"
                   title="Müşteri Memnuniyeti"
                   description="Deneyim Sonunda Üründen Memnun Müşteriler"

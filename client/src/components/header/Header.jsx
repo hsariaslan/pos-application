@@ -6,7 +6,6 @@ import {
   ShoppingCartOutlined,
   CopyOutlined,
   UserOutlined,
-  BarChartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
@@ -60,10 +59,6 @@ const Header = ({setSearch}) => {
         <Link to="/customers" className={`menu-link ${pathname === "/customers" && "active"}`}>
           <UserOutlined className="md:text-2xl text-xl" />
           <span className="md:text-xs text-[10px]">Müşteriler</span>
-        </Link>
-        <Link to="/statistics" className={`menu-link ${pathname === "/statistics" && "active"}`}>
-          <BarChartOutlined className="md:text-2xl text-xl" />
-          <span className="md:text-xs text-[10px]">İstatistikler</span>
         </Link>
         <Link to="/login" onClick={logOut} className="menu-link">
           <LogoutOutlined className="md:text-2xl text-xl" />
