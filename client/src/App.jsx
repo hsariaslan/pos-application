@@ -17,7 +17,7 @@ const App = () => {
   }, [cart]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/pos">
       <Routes>
         <Route path="/" element={
           <RouteControl>
